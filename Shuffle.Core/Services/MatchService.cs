@@ -76,6 +76,16 @@ namespace Shuffle.Core.Services
             
             challenger.Elo += eloChange;
             opposition.Elo -= eloChange;
+            
+            if(outcome == GameOutcome.Win)
+            {
+                challenger.Wins++;
+                opposition.Losses++;
+            } else
+            {
+                challenger.Losses++;
+                opposition.Wins++;
+            }
 
             _db.SaveChanges();
         }
