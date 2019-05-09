@@ -10,10 +10,8 @@ namespace Shuffle.Data.Entities.Mappings
             builder.ToTable("User");
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.FirstName).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.LastName).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.UserName).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.Password).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.AuthId).HasMaxLength(50).IsRequired();
             builder.Property(x => x.Email).HasMaxLength(150);
         }
     }
