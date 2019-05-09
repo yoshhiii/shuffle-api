@@ -31,7 +31,22 @@ namespace Shuffle.Core.Services
 
         public User CreateUser(User userToCreate)
         {
-            return null;
+            var user = new UserEntity
+            {
+                Name = userToCreate.Name,
+                Email = userToCreate.Email,
+                AuthId = userToCreate.AuthId
+            };
+            _db.Users.Add(user);
+            _db.SaveChanges();
+
+            return new User
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                AuthId = user.AuthId
+            };
         }
     }
 }
