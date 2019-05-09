@@ -30,7 +30,18 @@ namespace Shuffle.Core.Services
 
             if (userId.HasValue)
             {
-                query.SelectMany(x => x.UserTeams).Where(t => t.UserId == userId.Value).Select(x => x.Team);
+                var myTeams = query.Include(x => x.UserTeams).SelectMany(x => x.UserTeams).Where(x => x.UserId == userId.Value).Select(x => x.Team).ToList();
+                var teamList = new List<Team>();
+                myTeams.ForEach(x =>
+                {
+                    teamList.Add(new Team
+                    {
+                        Id = x.Id,
+                        Name = x.Name
+                    });
+                });
+
+                return teamList;
             }
 
             var team = query.ProjectTo<Team>().ToList();
