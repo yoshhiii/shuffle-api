@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Shuffle.Data;
 using Shuffle.Data.Entities;
 using Shuffle.Core.Models;
@@ -23,9 +24,16 @@ namespace Shuffle.Core.Services
             return teams;
         }
 
-        public List<Team> GetTeams()
+        public List<Team> GetTeams(int? userId)
         {
-            var team = _db.Teams.ProjectTo<Team>().ToList();
+            var query = _db.Teams;
+
+            if (userId.HasValue)
+            {
+                query.Where(x => x.UserTeams.Any(ut => ut.UserId == userId));
+            }
+
+            var team = query.ProjectTo<Team>().ToList();
 
             return team;
         }
