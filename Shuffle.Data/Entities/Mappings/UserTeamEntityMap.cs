@@ -10,10 +10,10 @@ namespace Shuffle.Data.Entities.Mappings
             builder.HasKey(bc => new { bc.UserId, bc.TeamId });
             builder.HasOne(bc => bc.User)
                 .WithMany(b => b.UserTeams)
-                .HasForeignKey(bc => bc.TeamId);
+                .HasForeignKey(bc => bc.UserId);
             builder.HasOne(bc => bc.Team)
                 .WithMany(c => c.UserTeams)
-                .HasForeignKey(bc => bc.UserId);
+                .HasForeignKey(bc => bc.TeamId);
         }
     }
 }
