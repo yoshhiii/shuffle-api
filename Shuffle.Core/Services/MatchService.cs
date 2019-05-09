@@ -48,7 +48,7 @@ namespace Shuffle.Core.Services
                 RulesetId = matchToCreate.RulesetId
             };
 
-            var user = _db.Matches.Add(newMatch);
+            _db.Matches.Add(newMatch);
 
             var result = _db.SaveChanges();
 
