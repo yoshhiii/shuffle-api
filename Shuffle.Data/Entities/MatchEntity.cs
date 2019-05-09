@@ -8,10 +8,10 @@ namespace Shuffle.Data.Entities
     public class MatchEntity
     {
         public int Id { get; set; }
-        public int ChallengerId { get; set; }
-        public int OppositionId { get; set; }
-        public int ChallengerScore { get; set; }
-        public int OppositionScore { get; set; }
+        public int? ChallengerId { get; set; }
+        public int? OppositionId { get; set; }
+        public int? ChallengerScore { get; set; }
+        public int? OppositionScore { get; set; }
         public DateTime MatchDate { get; set; }
         public int RulesetId { get; set; }
 

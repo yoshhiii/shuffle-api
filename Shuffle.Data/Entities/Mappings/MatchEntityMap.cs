@@ -11,12 +11,12 @@ namespace Shuffle.Data.Entities.Mappings
             builder.HasKey(x => x.Id);
 
             builder.HasOne(x => x.Challenger)
-                .WithMany(x => x.ChallengerMatches)
+                .WithMany(t => t.ChallengerMatches)
                 .HasForeignKey(x => x.ChallengerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.Opposition)
-                .WithMany(x => x.OppositionMatches)
+                .WithMany(t => t.OppositionMatches)
                 .HasForeignKey(x => x.OppositionId)
                 .OnDelete(DeleteBehavior.Restrict);
 
