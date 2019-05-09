@@ -41,6 +41,7 @@ namespace Shuffle.Api
             services.AddScoped<ITeamRecordService, TeamRecordService>();
             services.AddScoped<ITeamService, TeamService>();
             services.AddScoped<IMatchService, MatchService>();
+            services.AddScoped<IRulesetService, RulesetService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
