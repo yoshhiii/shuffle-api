@@ -8,36 +8,36 @@ using Shuffle.Core.Services;
 
 namespace Shuffle.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/team-records")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class TeamRecordsController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly ITeamRecordService _teamRecordService;
 
-        public UsersController(IUserService userService)
+        public TeamRecordsController(ITeamRecordService teamRecordService)
         {
-            _userService = userService;
+            _teamRecordService = teamRecordService;
         }
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<TeamRecord> Get()
         {
-            return _userService.GetUsers();
+            return _teamRecordService.GetTeamRecords();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public User Get(int id)
+        public TeamRecord Get(int id)
         {
-            return _userService.GetUser(id);
+            return _teamRecordService.GetTeamRecord(id);
         }
 
         // POST api/values
         [HttpPost]
-        public User Post([FromBody] User user)
+        public TeamRecord Post([FromBody] TeamRecord teamRecord)
         {
-            return _userService.CreateUser(user);
+            return _teamRecordService.CreateTeamRecord(teamRecord);
         }
 
         // PUT api/values/5

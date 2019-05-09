@@ -38,6 +38,9 @@ namespace Shuffle.Api
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<ShuffleDbContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITeamRecordService, TeamRecordService>();
+            services.AddScoped<ITeamService, TeamService>();
+            services.AddScoped<IMatchService, MatchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

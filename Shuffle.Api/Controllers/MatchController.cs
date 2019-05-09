@@ -1,43 +1,43 @@
-﻿using System;
+﻿using Shuffle.Core.Models;
+using Shuffle.Core.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Shuffle.Core.Models;
-using Shuffle.Core.Services;
 
 namespace Shuffle.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class MatchController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IMatchService _matchService;
 
-        public UsersController(IUserService userService)
+        public MatchController(IMatchService matchService)
         {
-            _userService = userService;
+            _matchService = matchService;
         }
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<Match> Get()
         {
-            return _userService.GetUsers();
+            return _matchService.GetMatches();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public User Get(int id)
+        public Match Get(int id)
         {
-            return _userService.GetUser(id);
+            return _matchService.GetMatch(id);
         }
 
         // POST api/values
         [HttpPost]
-        public User Post([FromBody] User user)
+        public Match Post([FromBody] Match match)
         {
-            return _userService.CreateUser(user);
+            return _matchService.CreateMatch(match);
         }
 
         // PUT api/values/5
