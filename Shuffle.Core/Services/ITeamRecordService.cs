@@ -8,7 +8,7 @@ namespace Shuffle.Core.Services
 {
     public interface ITeamRecordService
     {
-        List<TeamRecord> GetTeamRecords();
+        List<TeamRecord> GetTeamRecords(int? Id);
         TeamRecord GetTeamRecord(int Id);
         TeamRecord CreateTeamRecord(TeamRecord recordToCreate);
     }
