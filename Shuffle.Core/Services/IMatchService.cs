@@ -11,5 +11,6 @@ namespace Shuffle.Core.Services
         List<Match> GetMatches();
         Match GetMatch(int Id);
         Match CreateMatch(Match matchToCreate);
+        void CompleteMatch(int id, Score finalScore);
     }
 }

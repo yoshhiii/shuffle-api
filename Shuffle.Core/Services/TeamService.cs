@@ -25,7 +25,7 @@ namespace Shuffle.Core.Services
 
         public List<Team> GetTeams()
         {
-            var team = _db.Users.ProjectTo<Team>().ToList();
+            var team = _db.Teams.ProjectTo<Team>().ToList();
 
             return team;
         }

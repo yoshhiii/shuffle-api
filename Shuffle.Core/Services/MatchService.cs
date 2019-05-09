@@ -11,6 +11,12 @@ namespace Shuffle.Core.Services
     {
         private readonly ShuffleDbContext _db;
 
+        enum GameOutcome
+        {
+            Win = 1,
+            Loss = 0
+        }
+
         public MatchService(ShuffleDbContext context)
         {
             _db = context;
@@ -42,7 +48,7 @@ namespace Shuffle.Core.Services
                 RulesetId = matchToCreate.RulesetId
             };
 
-            var user = _db.Matches.Add(newMatch);
+            _db.Matches.Add(newMatch);
 
             var result = _db.SaveChanges();
 
@@ -54,6 +60,43 @@ namespace Shuffle.Core.Services
                 RulesetId = matchToCreate.RulesetId,
                 Id = result
             };
+        }
+
+        public void CompleteMatch(int Id, Score finalScore)
+        {
+            var match = GetMatch(Id);
+
+            var challenger = _db.TeamRecords.FirstOrDefault(x => x.TeamId == match.ChallengerId && x.RulesetId == match.RulesetId);
+            var opposition = _db.TeamRecords.FirstOrDefault(x => x.TeamId == match.OppositionId && x.RulesetId == match.RulesetId);
+
+            var outcome = DetermineWinner(finalScore);
+
+            var eloChange = CalculateELO(challenger.Elo, opposition.Elo, outcome);
+            
+            challenger.Elo += eloChange;
+            opposition.Elo -= eloChange;
+
+            _db.SaveChanges();
+        }
+
+        static double ExpectationToWin(int playerOneRating, int playerTwoRating)
+        {
+            return 1 / (1 + System.Math.Pow(10, (playerTwoRating - playerOneRating) / 400.0));
+        }
+
+        static int CalculateELO(int playerOneRating, int playerTwoRating, GameOutcome outcome)
+        {
+            int eloK = 32;
+
+            int delta = (int)(eloK * ((int)outcome - ExpectationToWin(playerOneRating, playerTwoRating)));
+
+            return delta;
+        }
+
+        static GameOutcome DetermineWinner(Score score) {
+            if (score.ChallengerScore > score.OppositionScore) return GameOutcome.Win;
+
+            return GameOutcome.Loss;
         }
     }
 }
