@@ -23,11 +23,16 @@ namespace Shuffle.Core.Services
             return teamRecord;
         }
 
-        public List<TeamRecord> GetTeamRecords()
+        public List<TeamRecord> GetTeamRecords(int? rulesetId)
         {
-            var teamRecords = _db.TeamRecords.ProjectTo<TeamRecord>().ToList();
+            var teamRecords = _db.TeamRecords;
+            if (rulesetId.HasValue)
+            {
+                teamRecords.Where(x => x.RulesetId == rulesetId);
+            }
+            var tr = teamRecords.ProjectTo<TeamRecord>().ToList();
 
-            return teamRecords;
+            return tr;
         }
 
         public TeamRecord CreateTeamRecord(TeamRecord recordToCreate)
