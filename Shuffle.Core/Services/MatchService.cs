@@ -25,14 +25,20 @@ namespace Shuffle.Core.Services
 
         public Match GetMatch(int Id)
         {
-            var match = _db. Matches.Where(x => x.Id == Id).ProjectTo<Match>().FirstOrDefault();
+            var match = _db.Matches.Where(x => x.Id == Id).ProjectTo<Match>().FirstOrDefault();
 
             return match;
         }
 
-        public List<Match> GetMatches()
+        public List<Match> GetMatches(int? teamId)
         {
-            var matches = _db.Matches.Where(x => x.MatchDate <= DateTime.UtcNow || x.MatchDate >= DateTime.UtcNow.AddDays(-7)).ProjectTo<Match>().ToList();
+            var query = _db.Matches;
+            if (teamId.HasValue)
+            {
+                query.Where(x => x.ChallengerId == teamId || x.OppositionId == teamId).AsQueryable();
+            }
+
+            var matches = query.Where(x => x.MatchDate <= DateTime.UtcNow || x.MatchDate >= DateTime.UtcNow.AddDays(-7)).ProjectTo<Match>().ToList();
 
             return matches;
         }
@@ -73,7 +79,7 @@ namespace Shuffle.Core.Services
             var outcome = DetermineWinner(finalScore);
 
             var eloChange = CalculateELO(challenger.Elo, opposition.Elo, outcome);
-            
+
             challenger.Elo += eloChange;
             opposition.Elo -= eloChange;
             
@@ -104,7 +110,8 @@ namespace Shuffle.Core.Services
             return delta;
         }
 
-        static GameOutcome DetermineWinner(Score score) {
+        static GameOutcome DetermineWinner(Score score)
+        {
             if (score.ChallengerScore > score.OppositionScore) return GameOutcome.Win;
 
             return GameOutcome.Loss;
