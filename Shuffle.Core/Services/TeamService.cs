@@ -30,7 +30,7 @@ namespace Shuffle.Core.Services
 
             if (userId.HasValue)
             {
-                query.Where(x => x.UserTeams.Any(ut => ut.UserId == userId));
+                query.SelectMany(x => x.UserTeams).Where(t => t.UserId == userId.Value).Select(x => x.Team);
             }
 
             var team = query.ProjectTo<Team>().ToList();
@@ -56,7 +56,7 @@ namespace Shuffle.Core.Services
 
             _db.Teams.Add(new TeamEntity
             {
-                Name = teamToCreate.Name,    
+                Name = teamToCreate.Name,
                 UserTeams = userTeams
             });
 
