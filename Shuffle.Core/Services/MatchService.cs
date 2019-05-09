@@ -32,10 +32,10 @@ namespace Shuffle.Core.Services
 
         public List<Match> GetMatches(int? teamId)
         {
-            var query = _db.Matches;
+            var query = _db.Matches.AsQueryable();
             if (teamId.HasValue)
             {
-                query.Where(x => x.ChallengerId == teamId || x.OppositionId == teamId).AsQueryable();
+                query = query.Where(x => x.ChallengerId == teamId || x.OppositionId == teamId);
             }
 
             var matches = query.Where(x => x.MatchDate <= DateTime.UtcNow || x.MatchDate >= DateTime.UtcNow.AddDays(-7)).ProjectTo<Match>().ToList();
