@@ -32,7 +32,7 @@ namespace Shuffle.Core.Services
 
         public TeamRecord CreateTeamRecord(TeamRecord recordToCreate)
         {
-
+            return null;
         }
     }
 }

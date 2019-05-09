@@ -32,7 +32,29 @@ namespace Shuffle.Core.Services
 
         public Team CreateTeam(Team teamToCreate)
         {
+            var userIds = teamToCreate.Users.Select(x => x.Id);
+            var users = _db.Users.Where(x => userIds.Contains(x.Id)).ToList();
+            var teamEntity = new TeamEntity
+            {
+                Name = teamToCreate.Name
+            };
 
+            var userTeams = new List<UserTeamEntity>();
+
+            users.ForEach(x =>
+            {
+                userTeams.Add(new UserTeamEntity { TeamId = teamEntity.Id, UserId = x.Id });
+            });
+
+            _db.Teams.Add(new TeamEntity
+            {
+                Name = teamToCreate.Name,    
+                UserTeams = userTeams
+            });
+
+            _db.SaveChanges();
+
+            return teamToCreate;
         }
     }
 }
