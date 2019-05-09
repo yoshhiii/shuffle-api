@@ -34,22 +34,24 @@ namespace Shuffle.Core.Services
         {
             var newMatch = new MatchEntity
             {
-                FirstName = userToCreate.FirstName,
-                LastName = userToCreate.LastName,
-                Email = userToCreate.Email,
-                Password = userToCreate.Password
+                ChallengerId = matchToCreate.ChallengerId,
+                OppositionId = matchToCreate.OppositionId,
+                ChallengerScore = null,
+                OppositionScore = null,
+                MatchDate = matchToCreate.MatchDate,
+                RulesetId = matchToCreate.RulesetId
             };
 
-            var user = _db.Users.Add(newUser);
+            var user = _db.Matches.Add(newMatch);
 
             var result = _db.SaveChanges();
 
-            return new User
+            return new Match
             {
-                FirstName = userToCreate.FirstName,
-                LastName = userToCreate.LastName,
-                Email = userToCreate.Email,
-                Password = userToCreate.Password,
+                ChallengerId = matchToCreate.ChallengerId,
+                OppositionId = matchToCreate.OppositionId,
+                MatchDate = matchToCreate.MatchDate,
+                RulesetId = matchToCreate.RulesetId,
                 Id = result
             };
         }
