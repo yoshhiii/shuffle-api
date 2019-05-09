@@ -4,6 +4,7 @@ using AutoMapper.QueryableExtensions;
 using Shuffle.Data;
 using Shuffle.Data.Entities;
 using Shuffle.Core.Models;
+using System;
 
 namespace Shuffle.Core.Services
 {
@@ -31,7 +32,7 @@ namespace Shuffle.Core.Services
 
         public List<Match> GetMatches()
         {
-            var matches = _db.Matches.ProjectTo<Match>().ToList();
+            var matches = _db.Matches.Where(x => x.MatchDate <= DateTime.UtcNow || x.MatchDate >= DateTime.UtcNow.AddDays(-7)).ProjectTo<Match>().ToList();
 
             return matches;
         }
