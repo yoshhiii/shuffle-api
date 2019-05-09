@@ -65,10 +65,29 @@ namespace Shuffle.Core.Services
                 userTeams.Add(new UserTeamEntity { TeamId = teamEntity.Id, UserId = x.Id });
             });
 
-            _db.Teams.Add(new TeamEntity
+            var newTeamEntity = new TeamEntity
             {
                 Name = teamToCreate.Name,
                 UserTeams = userTeams
+            };
+            _db.Teams.Add(newTeamEntity);
+
+            _db.TeamRecords.Add(new TeamRecordEntity
+            {
+                TeamId = newTeamEntity.Id,
+                RulesetId = 1,
+                Elo = 1500,
+                Wins = 0,
+                Losses = 0
+            });
+
+            _db.TeamRecords.Add(new TeamRecordEntity
+            {
+                TeamId = newTeamEntity.Id,
+                RulesetId = 2,
+                Elo = 1500,
+                Wins = 0,
+                Losses = 0
             });
 
             _db.SaveChanges();
