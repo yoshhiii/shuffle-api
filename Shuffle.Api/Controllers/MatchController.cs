@@ -42,9 +42,9 @@ namespace Shuffle.Api.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Score score)
+        public void Put(int id, [FromBody] Score result)
         {
-            _matchService.CompleteMatch(id, score);
+            _matchService.CompleteMatch(id, result);
         }
 
         // DELETE api/values/5

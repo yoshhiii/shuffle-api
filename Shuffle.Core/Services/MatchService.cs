@@ -71,7 +71,7 @@ namespace Shuffle.Core.Services
 
         public void CompleteMatch(int Id, Score finalScore)
         {
-            var match = GetMatch(Id);
+            var match = _db.Matches.FirstOrDefault(x => x.Id == Id);
 
             var challenger = _db.TeamRecords.FirstOrDefault(x => x.TeamId == match.ChallengerId && x.RulesetId == match.RulesetId);
             var opposition = _db.TeamRecords.FirstOrDefault(x => x.TeamId == match.OppositionId && x.RulesetId == match.RulesetId);
@@ -82,16 +82,20 @@ namespace Shuffle.Core.Services
 
             challenger.Elo += eloChange;
             opposition.Elo -= eloChange;
-            
-            if(outcome == GameOutcome.Win)
+
+            if (outcome == GameOutcome.Win)
             {
                 challenger.Wins++;
                 opposition.Losses++;
-            } else
+            }
+            else
             {
                 challenger.Losses++;
                 opposition.Wins++;
             }
+
+            match.ChallengerScore = finalScore.ChallengerScore;
+            match.OppositionScore = finalScore.OppositionScore;
 
             _db.SaveChanges();
         }
