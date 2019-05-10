@@ -5,6 +5,11 @@ using Shuffle.Data;
 using Shuffle.Data.Entities;
 using Shuffle.Core.Models;
 using System;
+using System.IO;
+using System.Text;
+using System.Net;
+using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shuffle.Core.Services
 {
@@ -58,6 +63,23 @@ namespace Shuffle.Core.Services
             _db.Matches.Add(newMatch);
 
             var result = _db.SaveChanges();
+
+            var oppositionTeam =  _db.Matches
+                .Include(x => x.Opposition)
+                .ThenInclude(x => x.UserTeams)
+                .ThenInclude(x => x.User)
+                .Where(x => x.Id == newMatch.Id)
+                .SelectMany(x => x.Opposition.UserTeams)
+                .Select(x => x.User).ProjectTo<User>().ToList();
+
+            oppositionTeam.ForEach(x => {
+                if (x.FcmToken != null)
+                {
+                    sendFCM(x, matchToCreate);
+                }
+            });
+
+
 
             return new Match
             {
@@ -119,6 +141,48 @@ namespace Shuffle.Core.Services
             if (score.ChallengerScore > score.OppositionScore) return GameOutcome.Win;
 
             return GameOutcome.Loss;
+        }
+
+        private void sendFCM(User user, Match match)
+        {
+            WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+            tRequest.Method = "post";
+            //serverKey - Key from Firebase cloud messaging server  
+            tRequest.Headers.Add(string.Format("Authorization: key={0}", "AAAAcRcoyww:APA91bHmz3Ug10-pjkjY97DlYq7DZoEqbI4fr8gVV3PNLQvDnqzpxv8YN4jJUJ6Bls2JrX3AGsq2S3cS56gQnjj_hafnEI6fDrw5cAQiNzpRxbx66Csx73_vAXrig3-4srcMaCzVb4zx"));
+            //Sender Id - From firebase project setting  
+            tRequest.Headers.Add(string.Format("Sender: id={0}", "485719853836"));
+            tRequest.ContentType = "application/json";
+            var payload = new
+            {
+                to = user.FcmToken,
+                priority = "high",
+                content_available = true,
+                notification = new
+                {
+                    body = $"Your team {match.OppositionName} has been challenged by {match.ChallengerName} scheduled for {match.MatchDate.ToShortDateString()} at {match.MatchDate.ToShortTimeString()}",
+                    title = "You have been challenged!",
+                    badge = 1
+                },
+            };
+
+            string postbody = JsonConvert.SerializeObject(payload).ToString();
+            Byte[] byteArray = Encoding.UTF8.GetBytes(postbody);
+            tRequest.ContentLength = byteArray.Length;
+            using (Stream dataStream = tRequest.GetRequestStream())
+            {
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                using (WebResponse tResponse = tRequest.GetResponse())
+                {
+                    using (Stream dataStreamResponse = tResponse.GetResponseStream())
+                    {
+                        if (dataStreamResponse != null) using (StreamReader tReader = new StreamReader(dataStreamResponse))
+                            {
+                                String sResponseFromServer = tReader.ReadToEnd();
+                                //result.Response = sResponseFromServer;
+                            }
+                    }
+                }
+            }
         }
     }
 }

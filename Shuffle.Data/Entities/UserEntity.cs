@@ -10,6 +10,7 @@ namespace Shuffle.Data.Entities
         public string Name { get; set; }
         public string Email { get; set; }
         public string AuthId { get; set; }
+        public string FcmToken { get; set; }
         public ICollection<UserTeamEntity> UserTeams { get; set; } = new List<UserTeamEntity>();
     }
 }

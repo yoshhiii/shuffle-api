@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shuffle.Data;
 
 namespace Shuffle.Data.Migrations
 {
     [DbContext(typeof(ShuffleDbContext))]
-    partial class ShuffleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190510065233_addedFcmTokenToUser")]
+    partial class addedFcmTokenToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
