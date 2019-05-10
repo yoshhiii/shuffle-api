@@ -22,6 +22,13 @@ namespace Shuffle.Core.Services
             return user;
         }
 
+        public User GetUserByUsername(string username)
+        {
+            var user = _db.Users.Where(x => x.Email == username).ProjectTo<User>().FirstOrDefault();
+
+            return user;
+        }
+
         public List<User> GetUsers()
         {
             var user = _db.Users.ProjectTo<User>().ToList();

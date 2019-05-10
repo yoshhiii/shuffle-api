@@ -10,6 +10,7 @@ namespace Shuffle.Core.Services
     {
         List<User> GetUsers();
         User GetUser(int userId);
+        User GetUserByUsername(string username);
         User CreateUser(User userToCreate);
     }
 }
