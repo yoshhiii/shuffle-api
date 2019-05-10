@@ -28,7 +28,12 @@ namespace Shuffle.Core.Services
             var teamRecords = _db.TeamRecords;
             if (rulesetId.HasValue)
             {
-                teamRecords.Where(x => x.RulesetId == rulesetId);
+                var teamRecordsList = teamRecords.Where(x => x.RulesetId == rulesetId).ToList();
+                var modelList = new List<TeamRecord>();
+                teamRecordsList.ForEach(x => {
+                    modelList.Add(new TeamRecord() { Elo = x.Elo, Losses = x.Losses, Wins = x.Wins, RulesetId = x.RulesetId, TeamId = x.TeamId });
+                });
+                return modelList;
             }
             var tr = teamRecords.ProjectTo<TeamRecord>().ToList();
 
