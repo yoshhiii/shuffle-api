@@ -21,9 +21,9 @@ namespace Shuffle.Api.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<Match> Get()
+        public IEnumerable<Match> Get(int? teamId)
         {
-            return _matchService.GetMatches();
+            return _matchService.GetMatches(teamId);
         }
 
         // GET api/values/5
@@ -42,9 +42,9 @@ namespace Shuffle.Api.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Score score)
+        public void Put(int id, [FromBody] Score result)
         {
-            _matchService.CompleteMatch(id, score);
+            _matchService.CompleteMatch(id, result);
         }
 
         // DELETE api/values/5

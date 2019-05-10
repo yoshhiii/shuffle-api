@@ -8,7 +8,7 @@ namespace Shuffle.Core.Services
 {
     public interface IMatchService
     {
-        List<Match> GetMatches();
+        List<Match> GetMatches(int? teamId);
         Match GetMatch(int Id);
         Match CreateMatch(Match matchToCreate);
         void CompleteMatch(int id, Score finalScore);
