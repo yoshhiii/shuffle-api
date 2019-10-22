@@ -33,6 +33,13 @@ namespace Shuffle.Api.Controllers
             return _userService.GetUser(id);
         }
 
+        // GET api/values/5
+        [HttpGet("username/{username}")]
+        public User GetByUsername(string username)
+        {
+            return _userService.GetUserByUsername(username);
+        }
+
         // POST api/values
         [HttpPost]
         public User Post([FromBody] User user)
