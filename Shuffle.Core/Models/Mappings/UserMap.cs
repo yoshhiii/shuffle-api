@@ -13,9 +13,7 @@ namespace shuffleboard.core.Models.Mappings
                 .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Name))
                 .ForMember(x => x.AuthId, opt => opt.MapFrom(x => x.AuthId))
                 .ForMember(x => x.Email, opt => opt.MapFrom(x => x.Email))
-                .ForMember(x => x.Id, opt => opt.MapFrom(x => x.Id))
-                .ForMember(x => x.FcmToken, opt => opt.MapFrom(x => x.FcmToken));
-
+                .ForMember(x => x.Id, opt => opt.MapFrom(x => x.Id));
         }
     }
 }
