@@ -9,7 +9,7 @@ namespace Shuffle.Core.Services
     public interface IUserService
     {
         List<User> GetUsers();
-        User GetUser(int userId);
+        User GetUser(string authId);
         User GetUserByUsername(string username);
         User CreateUser(User userToCreate);
     }

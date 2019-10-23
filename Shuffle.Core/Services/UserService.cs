@@ -15,9 +15,9 @@ namespace Shuffle.Core.Services
         {
             _db = context;
         }
-        public User GetUser(int userId)
+        public User GetUser(string authId)
         {
-            var user = _db.Users.Where(x => x.Id == userId).ProjectTo<User>().FirstOrDefault();
+            var user = _db.Users.Where(x => x.AuthId == authId).ProjectTo<User>().FirstOrDefault();
 
             return user;
         }
