@@ -5,13 +5,10 @@ using Shuffle.Data;
 using Shuffle.Data.Entities;
 using Shuffle.Core.Models;
 using System;
-<<<<<<< HEAD
 using System.IO;
 using System.Text;
 using System.Net;
 using Newtonsoft.Json;
-=======
->>>>>>> 2e45d953d4ea75c3070adaed05b284dfee65f606
 using Microsoft.EntityFrameworkCore;
 
 namespace Shuffle.Core.Services
@@ -38,12 +35,17 @@ namespace Shuffle.Core.Services
             return match;
         }
 
-        public List<Match> GetMatches(int? teamId, string authId)
+        public List<Match> GetMatches(int? teamId, string authId, DateTime? dateToCheck)
         {
+
             var query = _db.Matches.AsQueryable();
             if (teamId.HasValue)
             {
                 query = query.Where(x => x.ChallengerId == teamId || x.OppositionId == teamId);
+            }
+            if(dateToCheck.HasValue)
+            {
+                query = query.Where(x => DatesAreInTheSameWeek(x.MatchDate, dateToCheck.Value));
             }
 
             var matches = new List<Match>();
@@ -56,7 +58,7 @@ namespace Shuffle.Core.Services
             }
             else
             {
-                matches = query.Where(x => x.MatchDate <= DateTime.UtcNow || x.MatchDate >= DateTime.UtcNow.AddDays(-7)).ProjectTo<Match>().ToList();
+                matches = query.ProjectTo<Match>().ToList();
             }
 
             return matches;
@@ -155,6 +157,15 @@ namespace Shuffle.Core.Services
             if (score.ChallengerScore > score.OppositionScore) return GameOutcome.Win;
 
             return GameOutcome.Loss;
+        }
+
+        private bool DatesAreInTheSameWeek(DateTime date1, DateTime date2)
+        {
+            var cal = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+            var w1 = cal.GetWeekOfYear(date1, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+            var w2 = cal.GetWeekOfYear(date2, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+
+            return w1 == w2;
         }
 
         private void sendFCM(User user, Match match)
