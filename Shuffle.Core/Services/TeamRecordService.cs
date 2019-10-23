@@ -4,6 +4,7 @@ using AutoMapper.QueryableExtensions;
 using Shuffle.Data;
 using Shuffle.Data.Entities;
 using Shuffle.Core.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shuffle.Core.Services
 {
@@ -25,13 +26,13 @@ namespace Shuffle.Core.Services
 
         public List<TeamRecord> GetTeamRecords(int? rulesetId)
         {
-            var teamRecords = _db.TeamRecords;
+            var teamRecords = _db.TeamRecords.Include(x => x.Team).OrderByDescending(x => x.Elo);
             if (rulesetId.HasValue)
             {
                 var teamRecordsList = teamRecords.Where(x => x.RulesetId == rulesetId).ToList();
                 var modelList = new List<TeamRecord>();
                 teamRecordsList.ForEach(x => {
-                    modelList.Add(new TeamRecord() { Elo = x.Elo, Losses = x.Losses, Wins = x.Wins, RulesetId = x.RulesetId, TeamId = x.TeamId });
+                    modelList.Add(new TeamRecord() { Elo = x.Elo, Losses = x.Losses, Wins = x.Wins, RulesetId = x.RulesetId, TeamId = x.TeamId, Name = x.Team.Name });
                 });
                 return modelList;
             }
