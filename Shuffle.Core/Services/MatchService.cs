@@ -47,8 +47,10 @@ namespace Shuffle.Core.Services
                 var teams = user.UserTeams.Select(x => x.TeamId).ToList();
                 matches = query.Where(x => teams.Contains(x.ChallengerId.Value) || teams.Contains(x.OppositionId.Value)).ProjectTo<Match>().ToList();
             }
-
-            matches = query.Where(x => x.MatchDate <= DateTime.UtcNow || x.MatchDate >= DateTime.UtcNow.AddDays(-7)).ProjectTo<Match>().ToList();
+            else
+            {
+                matches = query.Where(x => x.MatchDate <= DateTime.UtcNow || x.MatchDate >= DateTime.UtcNow.AddDays(-7)).ProjectTo<Match>().ToList();
+            }
 
             return matches;
         }
