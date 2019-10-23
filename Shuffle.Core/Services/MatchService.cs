@@ -5,6 +5,7 @@ using Shuffle.Data;
 using Shuffle.Data.Entities;
 using Shuffle.Core.Models;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shuffle.Core.Services
 {
@@ -30,7 +31,7 @@ namespace Shuffle.Core.Services
             return match;
         }
 
-        public List<Match> GetMatches(int? teamId)
+        public List<Match> GetMatches(int? teamId, string authId, bool future)
         {
             var query = _db.Matches.AsQueryable();
             if (teamId.HasValue)
@@ -38,7 +39,23 @@ namespace Shuffle.Core.Services
                 query = query.Where(x => x.ChallengerId == teamId || x.OppositionId == teamId);
             }
 
-            var matches = query.Where(x => x.MatchDate <= DateTime.UtcNow || x.MatchDate >= DateTime.UtcNow.AddDays(-7)).ProjectTo<Match>().ToList();
+            var matches = new List<Match>();
+
+            if(!string.IsNullOrEmpty(authId))
+            {
+                var user = _db.Users.Include(x => x.UserTeams).Where(x => x.AuthId == authId).FirstOrDefault();
+                var teams = user.UserTeams.Select(x => x.TeamId).ToList();
+                matches = query.Where(x => teams.Contains(x.ChallengerId.Value) || teams.Contains(x.OppositionId.Value)).ProjectTo<Match>().ToList();
+            }
+
+            if (future)
+            {
+                matches = query.Where(x => x.MatchDate >= DateTime.UtcNow).ProjectTo<Match>().ToList();
+            }
+            else
+            {
+                matches = query.Where(x => x.MatchDate <= DateTime.UtcNow || x.MatchDate >= DateTime.UtcNow.AddDays(-7)).ProjectTo<Match>().ToList();
+            }
 
             return matches;
         }
