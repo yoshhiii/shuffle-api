@@ -18,7 +18,10 @@ namespace shuffleboard.core.Models.Mappings
                 .ForMember(x => x.OppositionName, opt => opt.MapFrom(x => x.Opposition.Name))
                 .ForMember(x => x.OppositionScore, opt => opt.MapFrom(x => x.OppositionScore))
                 .ForMember(x => x.MatchDate, opt => opt.MapFrom(x => x.MatchDate))
-                .ForMember(x => x.RulesetId, opt => opt.MapFrom(x => x.RulesetId));
+                .ForMember(x => x.RulesetId, opt => opt.MapFrom(x => x.RulesetId))
+                .ForMember(x => x.ChallengerColor, opt => opt.MapFrom(x => x.Challenger.Color))
+                .ForMember(x => x.OppositionColor, opt => opt.MapFrom(x => x.Opposition.Color));
+
         }
     }
 }

@@ -24,24 +24,19 @@ namespace Shuffle.Core.Services
             return teams;
         }
 
-        public List<Team> GetTeams(int? userId)
+        public List<Team> GetTeams(string authId)
         {
-            var query = _db.Teams;
+            var query = _db.Teams.Include(x => x.UserTeams);
 
-            if (userId.HasValue)
+            if (!string.IsNullOrEmpty(authId))
             {
-                var myTeams = query.Include(x => x.UserTeams).SelectMany(x => x.UserTeams).Where(x => x.UserId == userId.Value).Select(x => x.Team).ToList();
-                var teamList = new List<Team>();
-                myTeams.ForEach(x =>
-                {
-                    teamList.Add(new Team
-                    {
-                        Id = x.Id,
-                        Name = x.Name
-                    });
-                });
+                var myTeams = query
+                    .SelectMany(x => x.UserTeams)
+                    .Include(x => x.User)
+                    .Where(x => x.User.AuthId == authId)
+                    .Select(x => x.Team).ProjectTo<Team>().ToList();
 
-                return teamList;
+                return myTeams;
             }
 
             var team = query.ProjectTo<Team>().ToList();
@@ -55,7 +50,8 @@ namespace Shuffle.Core.Services
             var users = _db.Users.Where(x => userIds.Contains(x.Id)).ToList();
             var teamEntity = new TeamEntity
             {
-                Name = teamToCreate.Name
+                Name = teamToCreate.Name,
+                Color = teamToCreate.Color
             };
 
             var userTeams = new List<UserTeamEntity>();
@@ -68,6 +64,7 @@ namespace Shuffle.Core.Services
             var newTeamEntity = new TeamEntity
             {
                 Name = teamToCreate.Name,
+                Color = teamToCreate.Color,
                 UserTeams = userTeams
             };
             _db.Teams.Add(newTeamEntity);

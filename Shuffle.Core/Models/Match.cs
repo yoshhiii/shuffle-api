@@ -12,6 +12,8 @@ namespace Shuffle.Core.Models
         public int? OppositionScore { get; set; }
         public string ChallengerName { get; set; }
         public string OppositionName { get; set; }
+        public string ChallengerColor { get; set; }
+        public string OppositionColor { get; set; }
         public DateTime MatchDate { get; set; }
         public int RulesetId { get; set; }
     }
