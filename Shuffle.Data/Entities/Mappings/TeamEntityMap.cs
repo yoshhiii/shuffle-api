@@ -11,6 +11,7 @@ namespace Shuffle.Data.Entities.Mappings
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.Active).HasDefaultValue(true);
         }
     }
 }

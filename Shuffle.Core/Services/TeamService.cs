@@ -19,14 +19,14 @@ namespace Shuffle.Core.Services
 
         public Team GetTeam(int Id)
         {
-            var teams = _db.Teams.Where(x => x.Id == Id).ProjectTo<Team>().FirstOrDefault();
+            var teams = _db.Teams.Where(x => x.Id == Id && x.Active).ProjectTo<Team>().FirstOrDefault();
 
             return teams;
         }
 
         public List<Team> GetTeams(string authId)
         {
-            var query = _db.Teams.Include(x => x.UserTeams);
+            var query = _db.Teams.Include(x => x.UserTeams).Where(x => x.Active);
 
             if (!string.IsNullOrEmpty(authId))
             {
@@ -91,6 +91,22 @@ namespace Shuffle.Core.Services
             _db.SaveChanges();
 
             return teamToCreate;
+        }
+
+        public Team ArchiveTeam(int id, bool active)
+        {
+            var team = _db.Teams.Include(x => x.UserTeams).Where(x => x.Id == id).FirstOrDefault();
+
+            if (team == null)
+            {
+                throw new System.Exception();
+            }
+            team.Active = active;
+            _db.Update(team);
+            _db.SaveChanges();
+            return new Team { Id = team.Id, Name = team.Name, Color = team.Color, Users = team.UserTeams.Select(x => new User()).ToList() };
+
+
         }
     }
 }
