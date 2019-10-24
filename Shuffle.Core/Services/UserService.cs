@@ -29,11 +29,18 @@ namespace Shuffle.Core.Services
             return user;
         }
 
-        public List<User> GetUsers()
+        public List<User> GetUsers(string excludedAuthId)
         {
-            var user = _db.Users.ProjectTo<User>().ToList();
+            var query = _db.Users;
 
-            return user;
+            if(!string.IsNullOrEmpty(excludedAuthId))
+            {
+               var otherUsers = query.Where(x => x.AuthId != excludedAuthId);
+                return otherUsers.ProjectTo<User>().ToList();
+            }
+               
+
+            return query.ProjectTo<User>().ToList();
         }
 
         public User CreateUser(User userToCreate)

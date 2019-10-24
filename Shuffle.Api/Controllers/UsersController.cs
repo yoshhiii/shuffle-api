@@ -21,9 +21,9 @@ namespace Shuffle.Api.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<User> GetAll([FromQuery] string authId)
         {
-            return _userService.GetUsers();
+            return _userService.GetUsers(authId);
         }
 
         // GET api/values/5

@@ -10,6 +10,6 @@ namespace Shuffle.Core.Services
     {
         List<Team> GetTeams(string authId);
         Team GetTeam(int Id);
-        Team CreateTeam(Team teamToCreate);
+        Team CreateTeam(Team teamToCreate, string authId);
     }
 }

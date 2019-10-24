@@ -35,9 +35,9 @@ namespace Shuffle.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public Team Post([FromBody] Team team)
+        public Team Post([FromBody] Team team, [FromQuery] string authId)
         {
-            return _teamService.CreateTeam(team);
+            return _teamService.CreateTeam(team, authId);
         }
 
         // PUT api/values/5

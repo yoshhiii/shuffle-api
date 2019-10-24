@@ -44,10 +44,11 @@ namespace Shuffle.Core.Services
             return team;
         }
 
-        public Team CreateTeam(Team teamToCreate)
+        public Team CreateTeam(Team teamToCreate, string authId)
         {
-            var userIds = teamToCreate.Users.Select(x => x.Id);
-            var users = _db.Users.Where(x => userIds.Contains(x.Id)).ToList();
+            var userIds = teamToCreate.Users.Select(x => x.AuthId);
+            var users = _db.Users.Where(x => userIds.Contains(x.AuthId)).ToList();
+            var currentUser = _db.Users.Where(x => x.AuthId == authId).FirstOrDefault();
             var teamEntity = new TeamEntity
             {
                 Name = teamToCreate.Name,
@@ -55,7 +56,7 @@ namespace Shuffle.Core.Services
             };
 
             var userTeams = new List<UserTeamEntity>();
-
+            users.Add(currentUser);
             users.ForEach(x =>
             {
                 userTeams.Add(new UserTeamEntity { TeamId = teamEntity.Id, UserId = x.Id });
