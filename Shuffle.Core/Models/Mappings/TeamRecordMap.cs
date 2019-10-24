@@ -15,7 +15,8 @@ namespace shuffleboard.core.Models.Mappings
                 .ForMember(x => x.Elo, opt => opt.MapFrom(x => x.Elo))
                 .ForMember(x => x.Losses, opt => opt.MapFrom(x => x.Losses))
                 .ForMember(x => x.Wins, opt => opt.MapFrom(x => x.Wins))
-                .ForMember(x => x.RulesetId, opt => opt.MapFrom(x => x.RulesetId));
+                .ForMember(x => x.RulesetId, opt => opt.MapFrom(x => x.RulesetId))
+                .ForMember(x => x.Color, opt => opt.MapFrom(x => x.Team.Color));
         }
     }
 }

@@ -9,5 +9,6 @@ namespace Shuffle.Core.Models
         public int Wins { get; set; }
         public int Losses { get; set; }
         public string Name { get; set; }
+        public string Color { get; set; }
     }
 }
