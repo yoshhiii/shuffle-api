@@ -47,6 +47,12 @@ namespace Shuffle.Api.Controllers
             _matchService.CompleteMatch(id, result);
         }
 
+        [HttpPut("{id}/cancel")]
+        public void CancelMatch(int id, [FromBody] bool active)
+        {
+            _matchService.ToggleMatchStatus(id, active);
+        }
+
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)

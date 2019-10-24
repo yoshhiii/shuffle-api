@@ -38,7 +38,7 @@ namespace Shuffle.Core.Services
         public List<Match> GetMatches(int? teamId, string authId, DateTime? dateToCheck)
         {
 
-            var query = _db.Matches.Include(x => x.Challenger).ThenInclude(x => x.TeamRecords).Include(x => x.Opposition).ThenInclude(x => x.TeamRecords).AsQueryable();
+            var query = _db.Matches.Include(x => x.Challenger).ThenInclude(x => x.TeamRecords).Include(x => x.Opposition).ThenInclude(x => x.TeamRecords).Where(x => x.Active).AsQueryable();
             if (teamId.HasValue)
             {
                 query = query.Where(x => x.ChallengerId == teamId || x.OppositionId == teamId)
@@ -108,10 +108,27 @@ namespace Shuffle.Core.Services
             };
         }
 
+        public void ToggleMatchStatus(int id, bool active)
+        {
+            var match = _db.Matches.FirstOrDefault(x => x.Id == id);
+            if(match == null)
+            {
+                return;
+            }
+
+            match.Active = active;
+
+            _db.Matches.Update(match);
+            _db.SaveChanges();
+        }
+
         public void CompleteMatch(int Id, Score finalScore)
         {
             var match = _db.Matches.FirstOrDefault(x => x.Id == Id);
-
+            if (match == null)
+            {
+                return;
+            }
             var challenger = _db.TeamRecords.FirstOrDefault(x => x.TeamId == match.ChallengerId && x.RulesetId == match.RulesetId);
             var opposition = _db.TeamRecords.FirstOrDefault(x => x.TeamId == match.OppositionId && x.RulesetId == match.RulesetId);
 
@@ -135,6 +152,7 @@ namespace Shuffle.Core.Services
 
             match.ChallengerScore = finalScore.ChallengerScore;
             match.OppositionScore = finalScore.OppositionScore;
+            match.Active = false;
 
             _db.SaveChanges();
         }

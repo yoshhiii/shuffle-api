@@ -27,6 +27,7 @@ namespace Shuffle.Data.Entities.Mappings
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.MatchDate).IsRequired();
+            builder.Property(x => x.Active).HasDefaultValue(true);
         }
     }
 }

@@ -12,5 +12,6 @@ namespace Shuffle.Core.Services
         Match GetMatch(int Id);
         Match CreateMatch(Match matchToCreate);
         void CompleteMatch(int id, Score finalScore);
+        void ToggleMatchStatus(int id, bool active);
     }
 }

@@ -14,6 +14,7 @@ namespace Shuffle.Data.Entities
         public int? OppositionScore { get; set; }
         public DateTime MatchDate { get; set; }
         public int RulesetId { get; set; }
+        public bool Active { get; set; }
 
         public virtual TeamEntity Challenger { get; set; }
         public virtual TeamEntity Opposition { get; set; }
