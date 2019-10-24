@@ -11,7 +11,7 @@ namespace shuffleboard.core.Models.Mappings
         {
             CreateMap<TeamRecordEntity, TeamRecord>()
                 .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Team.Name))
-                .ForMember(x => x.TeamId, opt => opt.MapFrom(x => x.Id))
+                .ForMember(x => x.TeamId, opt => opt.MapFrom(x => x.TeamId))
                 .ForMember(x => x.Elo, opt => opt.MapFrom(x => x.Elo))
                 .ForMember(x => x.Losses, opt => opt.MapFrom(x => x.Losses))
                 .ForMember(x => x.Wins, opt => opt.MapFrom(x => x.Wins))

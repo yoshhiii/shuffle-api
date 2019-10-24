@@ -20,7 +20,9 @@ namespace shuffleboard.core.Models.Mappings
                 .ForMember(x => x.MatchDate, opt => opt.MapFrom(x => x.MatchDate))
                 .ForMember(x => x.RulesetId, opt => opt.MapFrom(x => x.RulesetId))
                 .ForMember(x => x.ChallengerColor, opt => opt.MapFrom(x => x.Challenger.Color))
-                .ForMember(x => x.OppositionColor, opt => opt.MapFrom(x => x.Opposition.Color));
+                .ForMember(x => x.OppositionColor, opt => opt.MapFrom(x => x.Opposition.Color))
+                .ForMember(x => x.ChallengerRecord, opt => opt.MapFrom(x => x.Challenger.TeamRecords.First(tr => tr.RulesetId == 1)))
+                .ForMember(x => x.OppositionRecord, opt => opt.MapFrom(x => Mapper.Map<TeamRecordEntity, TeamRecord>(x.Opposition.TeamRecords.First(tr => tr.RulesetId == 1))));
 
         }
     }
