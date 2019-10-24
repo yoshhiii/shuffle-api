@@ -55,5 +55,24 @@ namespace Shuffle.Core.Services
                 AuthId = user.AuthId
             };
         }
+
+        public User UpdateUser(string authId, User user)
+        {
+            var userUpdate = _db.Users.Where(x => x.AuthId == authId).FirstOrDefault();
+
+            userUpdate.Name = user.Name;
+            userUpdate.Email = user.Email;
+
+            _db.Users.Update(userUpdate);
+            _db.SaveChanges();
+
+            return new User
+            {
+                Id = userUpdate.Id,
+                Name = userUpdate.Name,
+                Email = userUpdate.Email,
+                AuthId = userUpdate.AuthId
+            };
+        }
     }
 }
