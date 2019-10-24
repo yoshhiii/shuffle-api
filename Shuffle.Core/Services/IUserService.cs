@@ -12,5 +12,6 @@ namespace Shuffle.Core.Services
         User GetUser(string authId);
         User GetUserByUsername(string username);
         User CreateUser(User userToCreate);
+        User UpdateUser(string authId, User user);
     }
 }

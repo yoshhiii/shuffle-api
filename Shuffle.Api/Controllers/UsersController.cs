@@ -48,9 +48,10 @@ namespace Shuffle.Api.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{authId}")]
+        public User Put(string authId, [FromBody] User user)
         {
+            return _userService.UpdateUser(authId, user);
         }
 
         // DELETE api/values/5
