@@ -27,10 +27,10 @@ namespace Shuffle.Api.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public User Get(int id)
+        [HttpGet("{authId}")]
+        public User Get(string authId)
         {
-            return _userService.GetUser(id);
+            return _userService.GetUser(authId);
         }
 
         // GET api/values/5
