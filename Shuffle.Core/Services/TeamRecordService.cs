@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using AutoMapper.QueryableExtensions;
-using Shuffle.Data;
-using Shuffle.Data.Entities;
-using Shuffle.Core.Models;
+﻿using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Shuffle.Core.Models;
+using Shuffle.Data;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Shuffle.Core.Services
 {
@@ -31,8 +30,9 @@ namespace Shuffle.Core.Services
             {
                 var teamRecordsList = teamRecords.Where(x => x.RulesetId == rulesetId).ToList();
                 var modelList = new List<TeamRecord>();
-                teamRecordsList.ForEach(x => {
-                    modelList.Add(new TeamRecord() { Elo = x.Elo, Losses = x.Losses, Wins = x.Wins, RulesetId = x.RulesetId, TeamId = x.TeamId, Name = x.Team.Name });
+                teamRecordsList.ForEach(x =>
+                {
+                    modelList.Add(new TeamRecord() { Elo = x.Elo, Losses = x.Losses, Wins = x.Wins, RulesetId = x.RulesetId, TeamId = x.TeamId, Name = x.Team.Name, Color = x.Team.Color });
                 });
                 return modelList;
             }
