@@ -28,6 +28,7 @@ namespace Shuffle.Data.Entities.Mappings
 
             builder.Property(x => x.MatchDate).IsRequired();
             builder.Property(x => x.Active).HasDefaultValue(true);
+            builder.Property(x => x.Complete).HasDefaultValue(false);
         }
     }
 }

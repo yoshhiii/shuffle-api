@@ -55,7 +55,11 @@ namespace Shuffle.Core.Services
             {
                 var user = _db.Users.Include(x => x.UserTeams).Where(x => x.AuthId == authId).FirstOrDefault();
                 var teams = user.UserTeams.Select(x => x.TeamId).ToList();
-                matches = query.Where(x => teams.Contains(x.ChallengerId.Value) || teams.Contains(x.OppositionId.Value)).Where(x => x.MatchDate.ToUniversalTime() >= DateTime.Now.ToUniversalTime()).OrderBy(x => x.MatchDate).ProjectTo<Match>().ToList();
+                matches = query
+                    .Where(x => teams.Contains(x.ChallengerId.Value) || teams.Contains(x.OppositionId.Value))
+                    .Where(x => x.MatchDate.ToUniversalTime() >= DateTime.Now.ToUniversalTime())
+                    .Where(x => !x.Complete)
+                    .OrderBy(x => x.MatchDate).ProjectTo<Match>().ToList();
             }
             else
             {
@@ -152,7 +156,7 @@ namespace Shuffle.Core.Services
 
             match.ChallengerScore = finalScore.ChallengerScore;
             match.OppositionScore = finalScore.OppositionScore;
-            match.Active = false;
+            match.Complete = true;
 
             _db.SaveChanges();
         }

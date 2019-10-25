@@ -15,6 +15,7 @@ namespace Shuffle.Data.Entities
         public DateTime MatchDate { get; set; }
         public int RulesetId { get; set; }
         public bool Active { get; set; }
+        public bool Complete { get; set; }
 
         public virtual TeamEntity Challenger { get; set; }
         public virtual TeamEntity Opposition { get; set; }
