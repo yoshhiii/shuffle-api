@@ -84,15 +84,6 @@ namespace Shuffle.Core.Services
                 Losses = 0
             });
 
-            _db.TeamRecords.Add(new TeamRecordEntity
-            {
-                TeamId = newTeamEntity.Id,
-                RulesetId = 2,
-                Elo = 1500,
-                Wins = 0,
-                Losses = 0
-            });
-
             _db.SaveChanges();
 
             return teamToCreate;
