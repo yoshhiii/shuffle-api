@@ -128,7 +128,7 @@ namespace Shuffle.Core.Services
 
         public void CompleteMatch(int Id, Score finalScore)
         {
-            var match = _db.Matches.FirstOrDefault(x => x.Id == Id);
+            var match = _db.Matches.Where(x => !x.Complete ).FirstOrDefault(x => x.Id == Id);
             if (match == null)
             {
                 return;
