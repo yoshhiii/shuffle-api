@@ -8,7 +8,7 @@ namespace Shuffle.Core.Services
 {
     public interface ITeamService
     {
-        List<Team> GetTeams(string authId);
+        List<Team> GetTeams(string authId, bool others);
         Team GetTeam(int Id);
         Team CreateTeam(Team teamToCreate, string authId);
         Team ArchiveTeam(int id, bool active);

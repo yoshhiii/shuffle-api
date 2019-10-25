@@ -24,17 +24,22 @@ namespace Shuffle.Core.Services
             return teams;
         }
 
-        public List<Team> GetTeams(string authId)
+        public List<Team> GetTeams(string authId, bool others)
         {
             var query = _db.Teams.Include(x => x.UserTeams).Where(x => x.Active);
 
             if (!string.IsNullOrEmpty(authId))
             {
-                var myTeams = query
-                    .SelectMany(x => x.UserTeams)
-                    .Include(x => x.User)
-                    .Where(x => x.User.AuthId == authId)
-                    .Select(x => x.Team).ProjectTo<Team>().ToList();
+                query = query
+                    .Include(x => x.UserTeams);
+                if (others)
+                {
+                    query = query.Where(x => x.UserTeams.All(ut => ut.User.AuthId != authId));
+                } else
+                {
+                    query = query.Where(x => x.UserTeams.Any(ut => ut.User.AuthId == authId));
+                }
+                var myTeams = query.ProjectTo<Team>().ToList();
 
                 return myTeams;
             }

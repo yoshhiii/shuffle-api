@@ -21,9 +21,9 @@ namespace Shuffle.Api.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<Team> Get(string authId)
+        public IEnumerable<Team> Get(string authId, bool others)
         {
-            return _teamService.GetTeams(authId);
+            return _teamService.GetTeams(authId, others);
         }
 
         // GET api/values/5
