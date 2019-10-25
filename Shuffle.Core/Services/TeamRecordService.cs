@@ -25,7 +25,7 @@ namespace Shuffle.Core.Services
 
         public List<TeamRecord> GetTeamRecords(int? rulesetId)
         {
-            var teamRecords = _db.TeamRecords.Include(x => x.Team).OrderByDescending(x => x.Elo);
+            var teamRecords = _db.TeamRecords.Include(x => x.Team).Where(x => x.Team.Active).OrderByDescending(x => x.Elo);
             if (rulesetId.HasValue)
             {
                 var teamRecordsList = teamRecords.Where(x => x.RulesetId == rulesetId).ToList();
