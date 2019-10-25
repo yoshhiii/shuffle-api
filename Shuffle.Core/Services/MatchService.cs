@@ -38,7 +38,7 @@ namespace Shuffle.Core.Services
         public List<Match> GetMatches(int? teamId, string authId, DateTime? dateToCheck)
         {
 
-            var query = _db.Matches.Include(x => x.Challenger).ThenInclude(x => x.TeamRecords).Include(x => x.Opposition).ThenInclude(x => x.TeamRecords).Where(x => x.Active).AsQueryable();
+            var query = _db.Matches.Include(x => x.Challenger).ThenInclude(x => x.TeamRecords).Include(x => x.Opposition).ThenInclude(x => x.TeamRecords).Where(x => x.Active);
             if (teamId.HasValue)
             {
                 query = query.Where(x => x.ChallengerId == teamId || x.OppositionId == teamId)
