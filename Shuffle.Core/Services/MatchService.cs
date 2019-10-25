@@ -59,7 +59,7 @@ namespace Shuffle.Core.Services
             }
             else
             {
-                matches = query.ProjectTo<Match>().ToList();
+                matches = query.OrderBy(x => x.MatchDate).ProjectTo<Match>().ToList();
             }
 
             return matches;
