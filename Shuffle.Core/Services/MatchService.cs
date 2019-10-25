@@ -55,7 +55,7 @@ namespace Shuffle.Core.Services
             {
                 var user = _db.Users.Include(x => x.UserTeams).Where(x => x.AuthId == authId).FirstOrDefault();
                 var teams = user.UserTeams.Select(x => x.TeamId).ToList();
-                matches = query.Where(x => teams.Contains(x.ChallengerId.Value) || teams.Contains(x.OppositionId.Value)).Where(x => x.MatchDate >= DateTime.Now).ProjectTo<Match>().ToList();
+                matches = query.Where(x => teams.Contains(x.ChallengerId.Value) || teams.Contains(x.OppositionId.Value)).Where(x => x.MatchDate.ToUniversalTime() >= DateTime.Now.ToUniversalTime()).OrderBy(x => x.MatchDate).ProjectTo<Match>().ToList();
             }
             else
             {
